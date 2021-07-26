@@ -30,3 +30,13 @@ KoBERT model(v2.0) 업로드
   1) 다른 Feautre 들 추가해서 학습해보기(키워드 등은 효과가 좋을 것이라 예상) -> model을 2개로 나눠서 결과를 합치는 걸 생각할지, 기존 모델에 계속 학습시킬건지 고민해봐야함
   2) Hierarchical Classification 내용 확인해보고 모델 수정 검토
   3) 모델 불러와서 epoch 수 좀 더 늘려도 될 듯 함(validation score 봤을 때) 
+
+
+'21. 7. 27. </br>
+KoBERT model(v3.0) 업로드
+- Test score : 
+- 환경 : Colab Pro
+- 반영사항
+  1) train, test dataset의 모든 column(6개)을 학습에 활용
+- 개선방향
+  1) Data augmentation in NLP 읽어보고 반영여부 결정 (https://neptune.ai/blog/data-augmentation-nlp)
