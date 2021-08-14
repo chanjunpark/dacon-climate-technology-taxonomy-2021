@@ -1,8 +1,9 @@
-# dacon_climate_technology_classification
+# Text Classification Task for Dacon Climate Technology Classification Competition
 Dacon competition 자연어기반 기후기술분류 AI경진대회
-- 주최 : 녹색기술센터(GCT)
-- 대회기간 : '21.6 ~ '21.8.16.
-- 평가산식 : Macro-F1
+- 대회개요 : https://dacon.io/competitions/official/235744/overview/description
+- We used a number of KoBERT models for embedding multiple features(fields) and Voting for predicting result 
+- KoBERT Baseline code : https://github.com/SKTBrain/KoBERT
+- The dataset was given from dacon :)
 
 # log
 '21. 6. 26. </br>
@@ -62,3 +63,12 @@ Text classification 생각정리
   * 페이퍼 : https://www.sciencedirect.com/science/article/pii/S0022000013000718
   
   * 아티클 : https://www.kdnuggets.com/2018/03/hierarchical-classification.html
+
+'21. 8. 15. </br>
+Issue : 성능이 안 나온다!
+* 지난 한 주 동안 여러가지 모델들을 만들어 테스트 해봤는데 생각보다 성능이 잘 나오지 않음
+  1) 6개의 features를 학습하기 위해 각 컬럼값을 하나의 data + label로 reshape 해준 뒤 하나의 BERT 모델에 학습하고, 각 feature들의 BERT embedding(768)을 결합해 FC layer 2개층을 통한 뒤 46개의 class를 예측해보려는 시도 -> 9 epoch 학습한 model로 테스트 했을 때 0.7279 의 스코어를 기록. 
+  2)  6개의 각 fields를 별도의 공간에 embedding 하기 위해 6개의 KoBERT 모델에 별도로 학습시킨 뒤, 각 모델이 예측한 Class(46) 값을 모아 Voting 하는 시도 -> 15epoch 학습한 model로 0.6817 의 스코어를 기록
+  3)  위 두가지 방법 모두 데이터 셋을 전처리 할 때 0 Class data의 10%만을 sampling해서 사용했다. 그 후 Validation set으로 20%를 떼어주고 난 뒤 데이터 갯수가 30000여개 정도에 불과했다. 
+* 나름대로 열심히 생각했고, 학습하는데 시간도 많이 투자한 방법이었는데 두 방법 다 기존의 스코어를 넘어서지 못했다. 기존의 v2.0 model의 Validation set 정확도를 봤을 때 추가 학습 여지가 남아있었고 epoch수를 더 높이면 점수향상은 기대할 수 있다고 생각했지만 기본적으로 BERT 모델 자체를 제대로 이해하지 못하고 설계한 모형인 것 같아 다시 설계했는데 결과가 좋지 못했다.
+* 우선, 0  class 10% Sampling의 효과가 없는듯했다. 왜냐하면, 기존 v2.0 설계가 Sentence 단위 Embedding에 특화된 BERT 모델의 특성상 연구과제명 한개의 feature 정도만 제대로 학습을 하고 분류에 이용했을 텐데 이 모델을 10 epoch 학습한 것보다 F1 score가 낮았기 때문이다. 혹시나 Voting이 문제인가 싶어 연구 과제명만 따로 분리하여 테스트를 진행했는데 결과는 0.64 정도로 Voting을 적용했을 떄보다 0.04 가량 낮은 F1 score가 나왔다. 결국, Voting은 효과가 있었고, Sampling은 되려 역효과가 나고 있다는 생각이 들었다. 그래서 다시 샘플링을 하지 않고 전처리만을 거친 데이터(Validation 분리 이후 140,000개 가량)를 가지고 각각 6개의 모델을 v2.0보다 더 많은 epoch(15)을 학습시킨 뒤 Voting 하여 결과를 제출해보자는 결론을 냈다. 아마 제출 날까지 학습만 시키기에도 시간이 빠듯하여(데이터가 140,000개나 되는 덕에 한개의 모델을 학습하는 데만 12시간 가량이 소요됨) 이 방법을 테스트 해보고 결과가 좋지 않더라도 더 이상의 개선은 힘들듯 함:)
