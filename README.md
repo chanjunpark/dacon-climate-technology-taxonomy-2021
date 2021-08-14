@@ -1,4 +1,4 @@
-# Text Classification Task for Dacon Climate Technology Classification Competition
+# Text Classification Task for Dacon Climate Technology Taxonomy Competition
 Dacon competition 자연어기반 기후기술분류 AI경진대회
 - 대회개요 : https://dacon.io/competitions/official/235744/overview/description
 - We used a number of KoBERT models for embedding multiple features(fields) and Voting for predicting result 
