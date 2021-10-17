@@ -4,6 +4,8 @@ Dacon competition 자연어기반 기후기술분류 AI경진대회
 - We used a number of KoBERT models for embedding multiple features(fields) and Voting for predicting result 
 - KoBERT Baseline code : https://github.com/SKTBrain/KoBERT
 - The dataset was given from dacon :)
+- The final result is below 
+![img_model_architecture](https://user-images.githubusercontent.com/18048079/137634514-bc7548c5-7c7d-4bd8-95d7-b83414e7eade.png)
 
 # log
 '21. 6. 26. </br>
